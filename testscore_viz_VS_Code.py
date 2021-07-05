@@ -70,8 +70,8 @@ columnNamesDict = {col : '' for col in list(df.columns)}
 print(f"columnNamesDict = {columnNamesDict}")
 
 #Remove the columns that you don't need and provide the english translation for the columns left
-#columnNamesDict = {'№': '', 'ФИО': '', 'сумма баллов': '', 'Мат.': '', 'Русс.': '', 'ИКТ': '', 'Бюджет/договор': '', 'Program': '', 'Ин.яз': ''}
-columnNamesDict = {'ФИО': 'name', 'сумма баллов': 'total_score', 'Мат.': 'math', 'Русс.': 'russian', 'ИКТ': 'it', 'program': 'program', 'Ин.яз': 'foreign_language'}
+#columnNamesDict = {'№': '', 'ФИО': '', 'сумма баллов': '', 'Мат.': '', 'Русс.': '', 'ИКТ': '', 'Бюджет/договор': '', 'program': '', 'Ин.яз': ''}
+columnNamesDict = {'ФИО': 'name', 'сумма баллов': 'total_score', 'Мат.': 'ege_math', 'Русс.': 'ege_russian', 'ИКТ': 'ege_it', 'Бюджет/договор': 'is_budget_placement', 'program': 'program', 'Ин.яз': 'ege_foreign'}
 
 #Filter only the needed columns
 df = df[columnNamesDict.keys()]
@@ -80,12 +80,27 @@ df = df[columnNamesDict.keys()]
 columnNamesEn = [columnNamesDict[col_ru] for col_ru in df.columns]
 df.columns = columnNamesEn
 
+#Distinct values in is_budget_placement column
+print(f"Distinct values in is_budget_placement column: {df.is_budget_placement.unique()}")
+
+#Replace 'договор' with False
+df.is_budget_placement.where(df.is_budget_placement != 'договор', False, inplace=True)
+#Replace 'Бюджет' with True
+df.is_budget_placement.where(df.is_budget_placement != 'Бюджет', True, inplace=True)
+#Replace Nan values with False
+df.is_budget_placement.fillna(value = False, inplace=True)
+
+
 
 #%%
 
+x_col_name = 'ege_math'
+y_col_name = 'ege_russian'
+
 alt.Chart(df).mark_circle(size=100).encode(
-    x='math',
-    y='russian',
+    alt.X(x_col_name, scale=alt.Scale(zero=False)),
+    alt.Y(y_col_name,scale=alt.Scale(zero=False)),
     color='program',
     tooltip=['name', 'total_score']
 ).interactive()
+
