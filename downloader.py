@@ -29,13 +29,14 @@ def clean_columns(df):
     column_names = {
         # Omit the names
         # 'ФИО': 'name',
-        "сумма баллов": "ege_total",
+        "program": "program",
+        "Бюджет/договор": "is_budget",
+        # "сумма баллов": "ege_total",
         "Мат.": "ege_math",
         "Русс.": "ege_russian",
         "ИКТ": "ege_it",
-        "Бюджет/договор": "is_budget",
-        "program": "program",
         "Ин.яз": "ege_foreign",
+
     }
     return df[column_names.keys()].rename(columns=column_names)
 
@@ -69,7 +70,7 @@ if __name__ == "__main__":
     df = read_raw_dataframe(xl_filename)
     df = clean_columns(df)
     df = budget_column(df)
-    df.to_csv("ege_scores.csv")
+    df.to_csv("ege_scores.csv", index=False)
     print(csv_filename)
 
     assert len(df[df.is_budget]) == 5
