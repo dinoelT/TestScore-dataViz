@@ -1,3 +1,7 @@
+Dataset and charts for Finec student scores
+
+![](visualization.png)
+
 Data:
 
 - school examination scores by subject ("ege_*")
@@ -17,5 +21,3 @@ Questions:
 
 1. Do school scores ("ege") predict average freshman year grade at out faculty? 
 2. Is freshman year grade in English predictable? 
-
-![](visualization.png)
